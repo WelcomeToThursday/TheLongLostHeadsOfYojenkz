@@ -1,6 +1,11 @@
 {
     "manifest": [
         {
+            "key": "audio/yojenkz.bundle",
+            "dependencyKeys": [
+            ]
+        },
+        {
             "key": "heads/bigbosshead.bundle",
             "dependencyKeys": [
                 "shaders",

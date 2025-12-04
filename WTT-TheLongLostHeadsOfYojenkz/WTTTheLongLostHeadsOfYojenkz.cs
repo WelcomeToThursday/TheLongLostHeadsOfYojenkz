@@ -25,12 +25,12 @@ public record ModMetadata : AbstractModMetadata
     public override string License { get; init; } = "MIT";
 }
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 20)]
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 2)]
 public class YojenkzHeads(
     WTTServerCommonLib.WTTServerCommonLib wttCommon
 ) : IOnLoad
 {
-    internal static readonly Dictionary<string, string> CharacterAudioMap = new(StringComparer.OrdinalIgnoreCase)
+    internal static readonly Dictionary<string, string> CharacterAudioMap = new()
     {
         {"Big Boss", "big_boss"},
         {"Kaz Miller", "kaz_miller"},
@@ -43,13 +43,18 @@ public class YojenkzHeads(
         {"Norman Reedus", "norman_reedus"},
         {"Sam Fisher", "sam_fisher"}
     };
+    
+    internal static readonly List<string> AudioBundleKeys = new()
+    {
+        "audio/yojenkz.bundle"
+    };
     public async Task OnLoad()
     {
         
         Assembly assembly = Assembly.GetExecutingAssembly();
         await wttCommon.CustomHeadService.CreateCustomHeads(assembly);
         await wttCommon.CustomVoiceService.CreateCustomVoices(assembly);
-        wttCommon.CustomAudioService.RegisterAudioBundles(assembly);
+        wttCommon.CustomAudioService.RegisterAudioBundles(AudioBundleKeys);
         foreach (var kvp in CharacterAudioMap)
         {
             wttCommon.CustomAudioService.CreateFaceCardAudio(kvp.Key, kvp.Value, true);
